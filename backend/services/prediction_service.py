@@ -1,9 +1,11 @@
 # services/prediction_service.py
 import joblib
 import numpy as np
+import os, sys
 
 # Load pre-trained model (this should be replaced with your actual path)
-model = joblib.load('backend/model/iris_model.pkl')
+model_path = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')), 'model', 'iris_model.pkl')
+model = joblib.load(model_path)
 
 def predict_species(sepal_length, sepal_width, petal_length, petal_width):
     # Convert input into numpy array

@@ -1,6 +1,6 @@
 # routes/predict.py
 from flask import Blueprint, request, jsonify, render_template
-from backend.services.prediction_service import predict_species
+from services.prediction_service import predict_species
 
 predict_bp = Blueprint('predict', __name__)
 
