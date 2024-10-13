@@ -1,0 +1,90 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:20.10.7
+        options: --privileged
+
+    steps:
+      # Step 1: Check out the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+
+      # Step 4: Run tests using unittest
+      - name: Run tests
+        run: |
+          source .venv/bin/activate
+          python -m unittest discover -s tests
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Docker Buildx (for building Docker images)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      # # Step 3: Log in to DockerHub (skip this if not using DockerHub)
+      # - name: Log in to DockerHub
+      #   uses: docker/login-action@v1
+      #   with:
+      #     username: ${{ secrets.DOCKER_USERNAME }}
+      #     password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # # Step 4: Build and push Docker image (you can skip pushing for now)
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     push: false  # Set to true if you want to push to DockerHub
+      #     tags: your_dockerhub_username/your_repo_name:latest
+
+      # Step 5: Deploy to Azure App Service (only when you have the resource)
+      # Uncomment the following steps once Azure App Service is ready
+      # - name: Azure Login
+      #   uses: azure/login@v1
+      #   with:
+      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      # - name: Deploy to Azure Web App
+      #   run: |
+      #     az webapp up --name <your-app-name> --resource-group <your-resource-group> --plan <your-app-service-plan>
+
+      # SonarCloud Configuration (Uncomment when ready to use)
+      # - name: SonarCloud Scan
+      #   uses: sonarsource/sonarcloud-github-action@master
+      #   with:
+      #     projectKey: <your_project_key>
+      #     organization: <your_organization>
+      #     token: ${{ secrets.SONAR_TOKEN }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

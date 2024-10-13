@@ -26,16 +26,26 @@ I created tests for both successful predictions and invalid input handling.
 ### File Structure
 ```bash
 root
+├── docker-compose.yml  
+├── Dockerfile 
+├── .gitignore
+├── requirements.txt      # Dependencies requirements    
+├── README.md
 ├── backend/
 │   ├── app.py                # Main Flask app
-│   ├── requirements.txt      # Dependencies requirements
 │   ├── model/
 │   │   └── iris_model.pkl    # Pre-trained model
 │   ├── routes/
 │   │   └── predict.py        # Prediction route handler
-│   └── services/
-│       └── prediction_service.py # Business logic
-│ 
+│   ├── services/
+│   │   └── prediction_service.py # Business logic
+│   ├── templates 
+│   │   ├── home.html
+│   │   ├── index.html
+│   │   └── result.html
+│   └── statics
+│       └── images
+│           └── iris.png 
 ├── notebooks
 │   └── IrisClassification.ipynb # model experimentations
 ├── tests
