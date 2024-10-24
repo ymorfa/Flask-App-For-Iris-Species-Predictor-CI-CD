@@ -1,6 +1,3 @@
-# ABIChallenge_YamilMorfa
-AB InBev MLOps Challenge Yamil Ernesto Morfa
-
 ## Overview
 This project implements a simple Flask API to classify Iris species using a pre-trained machine learning model. The API predicts the species based on the input features provided, such as sepal length, sepal width, petal length, and petal width.
 
